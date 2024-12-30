@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-service
+  labels:
+    app: employee
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 81
+      targetPort: 3001
+  selector:
+    app: employee

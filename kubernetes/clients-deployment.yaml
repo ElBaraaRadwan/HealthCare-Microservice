@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clients-deployment
+  labels:
+    app: clients
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clients
+  template:
+    metadata:
+      labels:
+        app: clients
+    spec:
+      containers:
+        - name: clients
+          image: your-dockerhub-repo/clients:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: KAFKA_BROKER
+              value: 'kafka:9092'
+            - name: NODE_ENV
+              value: 'production'
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000

@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+    networks:
+      - healthcare-network
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: 'yes'
+    networks:
+      - healthcare-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - healthcare-network
+
+  api-gateway:
+    build:
+      context: ./apps/api-gateway
+    container_name: api-gateway
+    ports:
+      - '3000:3000'
+    depends_on:
+      - clients
+      - employee
+      - pharmacy
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - healthcare-network
+
+  clients:
+    build:
+      context: ./apps/clients
+    container_name: clients
+    ports:
+      - '3001:3001'
+    depends_on:
+      - kafka
+      - redis
+    networks:
+      - healthcare-network
+
+  employee:
+    build:
+      context: ./apps/employee
+    container_name: employee
+    ports:
+      - '3002:3002'
+    depends_on:
+      - kafka
+      - redis
+    networks:
+      - healthcare-network
+
+  pharmacy:
+    build:
+      context: ./apps/pharmacy
+    container_name: pharmacy
+    ports:
+      - '3003:3003'
+    depends_on:
+      - kafka
+      - redis
+    networks:
+      - healthcare-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api-gateway
+    networks:
+      - healthcare-network
+
+networks:
+  healthcare-network:
+    driver: bridge

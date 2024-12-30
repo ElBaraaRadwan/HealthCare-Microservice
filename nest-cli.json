@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "config": {
+      "type": "application",
+      "root": "apps/config",
+      "entryFile": "main",
+      "sourceRoot": "apps/config/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/config/tsconfig.app.json"
+      }
+    },
+    "employee": {
+      "type": "application",
+      "root": "apps/employee",
+      "entryFile": "main",
+      "sourceRoot": "apps/employee/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/employee/tsconfig.app.json"
+      }
+    },
+    "pharmacy": {
+      "type": "application",
+      "root": "apps/pharmacy",
+      "entryFile": "main",
+      "sourceRoot": "apps/pharmacy/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/pharmacy/tsconfig.app.json"
+      }
+    },
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "clients": {
+      "type": "application",
+      "root": "apps/clients",
+      "entryFile": "main",
+      "sourceRoot": "apps/clients/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/clients/tsconfig.app.json"
+      }
+    },
+    "redis": {
+      "type": "application",
+      "root": "apps/redis",
+      "entryFile": "main",
+      "sourceRoot": "apps/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/redis/tsconfig.app.json"
+      }
+    }
+  }
+}
