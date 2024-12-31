@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Employee } from 'apps/employee/src/entities/employee.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
-@Entity()
+@Entity('clients')
 export class Client {
   @PrimaryGeneratedColumn()
   id: number;
@@ -8,9 +9,9 @@ export class Client {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @ManyToOne(() => Employee, (employee) => employee.clients)
+  employee: Employee;
 }

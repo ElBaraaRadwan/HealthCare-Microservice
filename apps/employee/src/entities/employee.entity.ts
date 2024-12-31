@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Client } from 'apps/clients/src/entities/client.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-@Entity({ name: 'employees' })
+@Entity('employees')
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,4 +11,7 @@ export class Employee {
 
   @Column()
   position: string;
+
+  @OneToMany(() => Client, (client) => client.employee)
+  clients: Client[];
 }
